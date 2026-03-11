@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
-            $table->string('titre');
-            $table->string('devise');
-            $table->decimal('solde')->default(0);
-            $table->foreignId('user_id')->constrained();
+            $table->string('name');
+            $table->string('currency');
+            $table->decimal('balance',15,2)->default(0.00);
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

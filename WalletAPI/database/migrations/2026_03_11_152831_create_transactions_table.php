@@ -13,8 +13,15 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->decimal('sold');
-            $table->foreignId('wallet_id')->constrained();
+            $table->foreignId('wallet_id')->constrained()->cascadeOnDelete();
+            $table->string('type');
+            $table->enum('type', ['deposit', 'withdraw', 'transfer_in', 'transfer_out']);
+            $table->decimal('amount', 15, 2);
+            $table->string('description')->nullable();
+            $table->decimal('balance_after', 15, 2);
+            $table->foreignId('receiver_wallet_id')->nullable()->constrained('wallets')->nullOnDelete();
+            $table->foreignId('sender_wallet_id')->nullable()->constrained('wallets')->nullOnDelete();
+
             $table->timestamps();
         });
     }
