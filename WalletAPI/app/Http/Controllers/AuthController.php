@@ -22,7 +22,7 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'Connexion réussie.',
             'data' => ['user' => $user, 'token' => $token->plainTextToken]
-        ],201);
+        ], 201);
     }
 
     public function login(StoreLoginRequest $request)
@@ -33,7 +33,7 @@ class AuthController extends Controller
                 "success" => false,
                 "message" => "Identifiants incorrects."
 
-            ]);
+            ], 401);
         }
         $token = $user->createToken($user->name);
         Auth::login($user);
@@ -51,6 +51,15 @@ class AuthController extends Controller
             "success" => true,
             "message" => "Déconnexion réussie."
 
+        ]);
+    }
+
+    public function user(Request $request)
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Profil utilisateur récupéré.',
+            'data'    => ['user' => $request->user()]
         ]);
     }
 }
