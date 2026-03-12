@@ -71,6 +71,63 @@ class TransactionController extends Controller
 
         ]);
     }
+
+    public function transfer(UpdateTransactionRequest $request, int $id)
+    {
+        $wallet = Wallet::find($id);
+        $receiver = Wallet::find($request->validated('receiver_wallet_id'));
+        // dd($wallet,$reciver);
+        if ($wallet->currency !== $receiver->currency) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Transfert impossible : les deux wallets doivent avoir la même devise.'
+            ], 400);
+        }
+
+        if ($wallet->balance < $request->amount) {
+            return response()->json([
+                'success' => false,
+                'message' => "Solde insuffisant. Solde actuel : {$wallet->balance} {$wallet->currency}."
+            ], 400);
+        }
+
+        $wallet->balance -= $request->validated('amount');
+        $wallet->save();
+
+        $receiver->balance += $request->validated('amount');
+        $receiver->save();
+
+        $transaction_out = Transaction::create([
+            'wallet_id' => $wallet->id,
+            'type' => 'transfer_out',
+            'amount' => $request->validated('amount'),
+            'description' => $request->validated('description'),
+            'receiver_wallet_id' => $receiver->id,
+            'balance_after' => $wallet->balance
+        ]);
+
+
+        $transaction_in = Transaction::create([
+            'wallet_id' => $receiver->id,
+            'type' => 'transfer_in',
+            'amount' => $request->validated('amount'),
+            'description' => $request->validated('description'),
+            'sender_wallet_id' => $wallet->id,
+            'balance_after' => $receiver->balance
+        ]);
+
+
+        return response()->json([
+            "success" => true,
+            "message" => "Transfert effectué avec succès.",
+            'date' => [
+                'transaction_out' => $transaction_out,
+                'transaction_in' => $transaction_in,
+                'wallet' => $wallet
+            ]
+
+        ]);
+    }
     public function index()
     {
         //

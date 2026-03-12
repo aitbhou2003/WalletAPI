@@ -12,7 +12,7 @@ class UpdateTransactionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,6 +24,9 @@ class UpdateTransactionRequest extends FormRequest
     {
         return [
             //
+            'receiver_wallet_id' => 'required|exists:wallets,id',
+            'amount'             => 'required|numeric',
+            'description'        => 'nullable|string',
         ];
     }
 }
