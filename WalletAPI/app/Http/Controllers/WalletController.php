@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\StorewalletRequest;
 use App\Http\Requests\UpdatewalletRequest;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,7 @@ class WalletController extends Controller
     public function index(Request $request)
     {
         //
-        
+
         $wallets = Wallet::where('user_id', $request->user()->id)->get();
         return response()->json([
             'success' => true,
@@ -55,7 +57,7 @@ class WalletController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request,int $id)
+    public function show(Request $request, int $id)
     {
         //
         $wallet = Wallet::find($id);
@@ -79,6 +81,7 @@ class WalletController extends Controller
             'data'    => ['wallet' => $wallet]
         ]);
     }
+    
 
     /**
      * Show the form for editing the specified resource.
