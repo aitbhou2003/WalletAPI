@@ -20,13 +20,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/wallets', [WalletController::class, 'index']);
     Route::get('/wallets/{id}', [WalletController::class, 'show']);
-    Route::post('/wallets/{id}/deposit',[TransactionController::class,'deposit']);
-    Route::post('/wallets/{id}/withdraw',[TransactionController::class,'withdraw']);
-    Route::post('/wallets/{id}/transfer ',[TransactionController::class,'transfer']);
-
-    
-
-
-
-    
+    Route::post('/wallets/{id}/deposit', [TransactionController::class, 'deposit']);
+    Route::post('/wallets/{id}/withdraw', [TransactionController::class, 'withdraw']);
+    Route::post('/wallets/{id}/transfer ', [TransactionController::class, 'transfer']);
+    Route::get('/wallets/{id}/transactions ', [TransactionController::class, 'index']);
 });

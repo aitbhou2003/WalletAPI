@@ -128,9 +128,17 @@ class TransactionController extends Controller
 
         ]);
     }
-    public function index()
+    public function index(Request $request, int $id)
     {
-        //
+        $wallet = Wallet::find($id);
+
+        $transactions = Transaction::where('wallet_id', $id)->get();
+
+        return response()->json([
+            "success" => true,
+            "message" => "Historique des transactions récupéré.",
+            'data' => ['transactions' => $transactions]
+        ]);
     }
 
     /**
