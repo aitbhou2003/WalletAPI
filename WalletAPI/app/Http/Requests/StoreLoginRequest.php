@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationRuleParser;
 
@@ -27,4 +28,24 @@ class StoreLoginRequest extends FormRequest
             'password' => 'required'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'email.exists' => 'Identifiants incorrects.'
+        ];
+    }
+
+
+    public function failedValidation(Validator $validator)
+    {
+
+
+        $error = $validator->errors();
+        return response()->json([
+            "succes" => false,
+            "message" => $error->messages()
+        ]);
+    }
+        
 }

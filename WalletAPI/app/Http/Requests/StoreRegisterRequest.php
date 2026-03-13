@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRegisterRequest extends FormRequest
@@ -25,7 +26,27 @@ class StoreRegisterRequest extends FormRequest
         return [
             'name' => 'required|max:255|string',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed|min:8'
         ];
+    }
+
+    public function messages()
+    {
+        return [
+            'email.unique' => "L'adresse email est déjà utilisée.",
+            'password.min' => "Le mot de passe doit contenir au moins 8 caractères."
+        ];
+    }
+
+
+    public function failedValidation(Validator $validator)
+    {
+       $errors = $validator->errors();
+
+       return response()->json([
+        "success" => false,
+        "message" => "Erreur de validation.",
+        "errors" => $errors->messages()
+       ]);
     }
 }

@@ -25,27 +25,28 @@ class StorewalletRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'currency' => 'required'
+            'currency' => 'required|in:MAD,EUR,USD'
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'Le nom du wallet est obligatoire.'
+            'name.required' => 'Le nom du wallet est obligatoire.',
+            'currency.in' => "La devise sélectionnée n'est pas valide."
         ];
     }
 
 
 
-public function failedValidation(Validator $validator)
-{
-    $errors = $validator->errors();
+    public function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors();
 
-    return response()->json([
-        "success" => false,
-        'message' => 'Erreur de validation',
-        'errors' => $errors->messages()
-    ]);
-}
+        return response()->json([
+            "success" => false,
+            'message' => 'Erreur de validation',
+            'errors' => $errors->messages()
+        ]);
+    }
 }

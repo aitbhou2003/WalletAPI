@@ -128,9 +128,8 @@ class TransactionController extends Controller
 
         ]);
     }
-    public function index(Request $request, int $id)
+    public function index(int $id)
     {
-        $wallet = Wallet::find($id);
 
         $transactions = Transaction::where('wallet_id', $id)->get();
 
