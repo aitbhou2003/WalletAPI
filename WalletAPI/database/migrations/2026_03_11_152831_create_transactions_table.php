@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('receiver_wallet_id')->nullable()->constrained('wallets')->nullOnDelete();
             $table->foreignId('sender_wallet_id')->nullable()->constrained('wallets')->nullOnDelete();
 
-            $table->timestamps();
+            $table->timestamps();  
         });
     }
 

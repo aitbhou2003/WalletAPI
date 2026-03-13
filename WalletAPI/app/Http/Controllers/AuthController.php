@@ -56,6 +56,7 @@ class AuthController extends Controller
 
     public function user(Request $request)
     {
+        
         return response()->json([
             'success' => true,
             'message' => 'Profil utilisateur récupéré.',

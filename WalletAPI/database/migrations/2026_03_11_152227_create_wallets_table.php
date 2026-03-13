@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('wallets', function (Blueprint $table) {
-            $table->id();
+            $table->id(); 
             $table->string('name');
-            $table->string('currency');
+            $table->enum('currency',['MAD', 'EUR', 'USD']);
             $table->decimal('balance',15,2)->default(0.00);
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();

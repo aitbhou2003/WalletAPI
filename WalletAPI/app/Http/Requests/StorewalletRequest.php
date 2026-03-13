@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorewalletRequest extends FormRequest
@@ -27,4 +28,24 @@ class StorewalletRequest extends FormRequest
             'currency' => 'required'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Le nom du wallet est obligatoire.'
+        ];
+    }
+
+
+
+public function failedValidation(Validator $validator)
+{
+    $errors = $validator->errors();
+
+    return response()->json([
+        "success" => false,
+        'message' => 'Erreur de validation',
+        'errors' => $errors->messages()
+    ]);
+}
 }
